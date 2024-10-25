@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.9"
 
 services:
   forticlient:
@@ -6,10 +6,37 @@ services:
       context: .
       dockerfile: Dockerfile
     image: hybirdcorp/docker-forticlient
+    restart: unless-stopped
     environment:
-      - VPNADDR=host:port
-      - VPNUSER=me@domain
-      - VPNPASS=secret
+      - VPNADDR= ${VPNADDR}
+      - VPNUSER= ${VPNUSER}
+      - VPNPASS= ${VPNPASS}
       - VPNTIMEOUT=${VPNTIMEOUT:-10}
-    network_mode: "host"
+    ports:
+      - "3000:3000"
+      - "3001:3001"
     privileged: true
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.rp_filter=2
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+
+  filezilla:
+    image: lscr.io/linuxserver/filezilla:latest
+    container_name: filezilla
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /path/to/config:/config
+    restart: unless-stopped
+    network_mode: "service:forticlient"
+    depends_on:
+      - forticlient

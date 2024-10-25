@@ -10,6 +10,7 @@ RUN apt-get update && \
   apt-get install -y -o APT::Install-Recommends=false -o APT::Install-Suggests=false \
   ca-certificates \
   expect \
+  ssh \
   net-tools \
   iproute2 \
   ipppd \
