@@ -8,9 +8,9 @@ services:
     image: hybirdcorp/docker-forticlient
     restart: unless-stopped
     environment:
-      - VPNADDR= ${VPNADDR}
-      - VPNUSER= ${VPNUSER}
-      - VPNPASS= ${VPNPASS}
+      - VPNADDR=${VPNADDR}
+      - VPNUSER=${VPNUSER}
+      - VPNPASS=${VPNPASS}
       - VPNTIMEOUT=${VPNTIMEOUT:-10}
     ports:
       - "3000:3000"
