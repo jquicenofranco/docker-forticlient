@@ -36,6 +36,7 @@ services:
       - TZ=Etc/UTC
     volumes:
       - /path/to/config:/config
+      - ./app:/app
     restart: unless-stopped
     network_mode: "service:forticlient"
     depends_on:
